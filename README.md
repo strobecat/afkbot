@@ -28,3 +28,7 @@ CLI or say `/m <bot_name> <command>` from one of `authorizedUsernames` in `src/c
 #### `cagan`
 `/server <subserver: sdf or slime>`: Join one of the subservers.  
 `/players`: List players and the position in the "sdf" subserver, using public map api.
+
+## FAQ
+> Public messages were shown as blank  
+Open `node_modules/.pnpm/prismarine-chat@1.11.0/node_modules/prismarine-chat/index.js`, modify `MAX_CHAT_DEPTH` to a bigger value
