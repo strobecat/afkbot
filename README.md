@@ -27,6 +27,7 @@ CLI or say `/m <bot_name> <command>` from one of `authorizedUsernames` in `src/c
 
 #### `cagan`
 `/server <subserver: sdf or slime>`: Join one of the subservers.  
+`/queryres <substring>`: Search for residences and return their position.
 `/players`: List players and the position in the "sdf" subserver, using public map api.
 
 ## FAQ

@@ -35,6 +35,39 @@ const getPlayers = () =>
       .end();
   });
 
+// handle /queryres
+const residenceQueryCommand = (text, output) => {
+  const key = text.slice(10);
+  const req = http
+    .request(
+      "http://mc.nubec.cn:25564/tiles/world/markers/Residence.json",
+      (res) => {
+        let json = "";
+        res.on("data", (chunk) => {
+          json += chunk;
+        });
+        res.on("end", () => {
+          let result = JSON.parse(json)
+            .filter((rect) => rect.data.key.includes(key))
+            .map((rect) => {
+              const from = rect.data["point1"];
+              const dest = rect.data["point2"];
+              return `${rect.data.key}: from (${from.x}, ~, ${from.z}) to (${dest.x}, ~, ${dest.z})`;
+            });
+          if (result.length == 0) {
+            output("Nothing");
+          } else {
+            output(result.join("; "));
+          }
+        });
+      },
+    )
+    .on("timeout", () => {
+      req.destroy();
+    })
+    .end();
+};
+
 // handle /server
 const serverCommand = (text) => {
   const createWindowHandler = (dest) => (window) => {
@@ -47,7 +80,7 @@ const serverCommand = (text) => {
   if (text === "/server sdf") {
     minecraft.once("windowOpen", createWindowHandler("grass_block"));
   } else if (text === "/server slime") {
-    minecraft.once("windowOpen", createWindowHandler("slime"));
+    minecraft.once("windowOpen", createWindowHandler("slime_block"));
   } else {
     return;
   }
@@ -58,7 +91,11 @@ const serverCommand = (text) => {
 // handle /players
 const playersCommand = (_, output) => {
   getPlayers().then(
-    (players) =>
+    (players) => {
+      if (players.length == 0) {
+        output("Nobody");
+        return;
+      }
       output(
         players
           .map(
@@ -66,7 +103,8 @@ const playersCommand = (_, output) => {
               `${info.name} at (${info.position.x}, ~, ${info.position.z}) in ${info.world}`,
           )
           .join(", "),
-      ),
+      );
+    },
     () => {},
   );
 };
@@ -112,6 +150,10 @@ const handleMessage = (msg, position) => {
 };
 
 const connectInfo = { host: "mc.nubec.cn", port: 25565 };
-const commands = { "/server": serverCommand, "/players": playersCommand };
+const commands = {
+  "/server": serverCommand,
+  "/players": playersCommand,
+  "/queryres": residenceQueryCommand,
+};
 const init = () => minecraft.on("message", handleMessage);
 export { connectInfo, commands as customCommands, init };
