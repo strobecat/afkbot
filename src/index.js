@@ -8,7 +8,7 @@ import config from "./config.js";
 const minecraft = createBot({
   ...connectInfo,
   ...config.login,
-  version: "1.21.3",
+  version: "1.19.4",
 })
   .once("end", () => process.exit(0))
   .once("kicked", (reason, loggedIn) => {
@@ -31,7 +31,14 @@ const maybeFish = () => {
     autoFishing = false;
     return;
   }
-  minecraft.fish().then(() => setTimeout(maybeFish, 500), console.error);
+  minecraft.fish().then(
+    () => setTimeout(maybeFish, 500),
+    () =>
+      setTimeout(() => {
+        bot.activateItem();
+        maybeFish();
+      }, 500),
+  );
 };
 
 const commands = {

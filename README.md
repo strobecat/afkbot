@@ -22,7 +22,7 @@ CLI or say `/m <bot_name> <command>` from one of `authorizedUsernames` in `src/c
 `/hotbar`: Print the thing on your right hand.  
 `/hotbar <i: 0-8>`: Switch selected slot of the hotbar aka. quick bar  
 `/drop <slot: integer>`: Drop the item in the specified slot in the inventory.  
-`/lookat <x: number> <y: number> <z: number>`: Look at one block. Currently broken when used before `/fish`.  
+`/lookat <x: number> <y: number> <z: number>`: Look at one block.  
 `/fish`: Start/stop auto fishing.
 
 #### `cagan`
