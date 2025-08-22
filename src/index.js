@@ -35,7 +35,7 @@ const maybeFish = () => {
     () => setTimeout(maybeFish, 500),
     () =>
       setTimeout(() => {
-        bot.activateItem();
+        minecraft.activateItem();
         maybeFish();
       }, 500),
   );
