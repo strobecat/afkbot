@@ -18,28 +18,31 @@ const minecraft = createBot({
 
 let autoFishing = false;
 /** Check and fish. */
-const maybeFish = () => {
-  const item = minecraft.inventory.slots[4 * 9 + minecraft.quickBarSlot];
+const maybeFish = (output) => {
   if (
     !autoFishing ||
-    !item ||
-    item.name !== "fishing_rod" ||
-    item.durabilityUsed > 56
+    !minecraft.heldItem ||
+    minecraft.heldItem.name !== "fishing_rod" ||
+    minecraft.heldItem.durabilityUsed > 56
   ) {
-    console.log("Fishing stopped");
+    output("Fishing stopped");
     autoFishing = false;
     return;
   }
   minecraft.fish().then(
-    () => setTimeout(maybeFish, 500),
-    () =>
-      setTimeout(() => {
-        minecraft.activateItem();
-        maybeFish();
-      }, 500),
+    () => {
+      setTimeout(() => maybeFish(output), 500);
+    },
+    () => {
+      if (minecraft.usingHeldItem) {
+        setTimeout(minecraft.activateItem, 200);
+      }
+      setTimeout(() => maybeFish(output), 500);
+    },
   );
 };
 
+let autocmdInterval = null;
 const commands = {
   "/bye": () => stop(),
   "/ls": (text, output) => {
@@ -90,19 +93,34 @@ const commands = {
   "/lookat": (text) => {
     try {
       minecraft.lookAt(vec3(...text.split(" ", 4).slice(1, 4)), true);
-      minecraft.lookAt(vec3(...text.split(" ", 4).slice(1, 4)), true);
     } catch (err) {
       err;
     }
   },
-  "/fish": () => {
+  "/fish": (_, output) => {
     if (autoFishing) {
       autoFishing = false;
-      minecraft.activateItem();
+      if (minecraft.usingHeldItem) {
+        minecraft.activateItem();
+      }
     } else {
       autoFishing = true;
-      maybeFish();
+      maybeFish(output);
     }
+  },
+  "/autocmd": (text, output) => {
+    const [intervalStr, ...command] = text.slice(9).split(" ");
+    if (autocmdInterval) {
+      autocmdInterval.close();
+    }
+    const interval = parseInt(intervalStr);
+    if (isNaN(interval)) {
+      return;
+    }
+    autocmdInterval = setInterval(
+      () => handleCommand(command.join(" "), output),
+      1000 * interval,
+    );
   },
   ...customCommands,
 };
