@@ -8,7 +8,6 @@ import config from "./config.js";
 const minecraft = createBot({
   ...connectInfo,
   ...config.login,
-  version: "1.19.4",
 })
   .once("end", () => process.exit(0))
   .once("kicked", (reason, loggedIn) => {

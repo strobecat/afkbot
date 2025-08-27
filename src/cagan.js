@@ -149,7 +149,7 @@ const handleMessage = (msg, position) => {
   }
 };
 
-const connectInfo = { host: "mc.nubec.cn", port: 25565 };
+const connectInfo = { host: "mc.nubec.cn", port: 25565, version: "1.19.4" };
 const commands = {
   "/server": serverCommand,
   "/players": playersCommand,
