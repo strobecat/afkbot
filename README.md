@@ -3,8 +3,7 @@
 Yet another minecraft bot.
 
 ## Install
-`pnpm install` then fill in `src/config.js`, then choose a server-dependency by `ln -sf src/<server_type>.js src/server.js`.  
-Currently `<server_type>` can be one of `("cagan")`.
+`pnpm install` then fill in `src/config.js`. 
 
 ## Start
 ```sh
@@ -21,9 +20,9 @@ CLI or say `/m <bot_name> <command>` from one of `authorizedUsernames` in `src/c
 `/bye`: Disconnect from the server.  
 `/drop <slot: integer>`: Drop the item in the specified slot in the inventory.  
 `/fish`: Start/stop auto fishing.
-`/hotbar`: Print the thing on your right hand.  
 `/hotbar <i: 0-8>`: Switch selected slot of the hotbar aka. quick bar  
 `/lookat <x: number> <y: number> <z: number>`: Look at one block.  
+`/ls`: Print the thing on your right hand.
 `/ls <i: integer>`: List things in slot from `i*9` to `i*9 + 8` in the inventory.  
 `/mv <a: integer> <b: integer>`: Exchange items in slot `a` and `b` in the inventory.  
 
