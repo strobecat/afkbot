@@ -10,16 +10,21 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.15.0",
   "dependencies": {
     "mineflayer": "^4.31.0",
     "vec3": "^0.1.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@tsconfig/node-lts": "^22.0.2",
+    "@types/node": "^24.3.0",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.3.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "prismarine-chat": "^1.11.0",
+    "prismarine-windows": "^2.9.0",
+    "typescript": "^5.9.2"
   }
 }
